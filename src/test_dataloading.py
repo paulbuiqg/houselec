@@ -24,6 +24,7 @@ def dataloader(dataset: Dataset) -> DataLoader:
 
 
 def test_dataset(dataset: Dataset):
+    """Test if dataset items have the correct size."""
     i = random.randrange(len(dataset))
     X, y = dataset.__getitem__(i)
     X_size = torch.Size([dataloading.N_INPUT_HOUR, len(dataset.feats)])
@@ -32,6 +33,7 @@ def test_dataset(dataset: Dataset):
 
 
 def test_dataloader(dataloader: DataLoader):
+    """Test if loop over dataloader runs till the end."""
     for i, _ in enumerate(dataloader):
         continue
     assert i == len(dataloader) - 1
