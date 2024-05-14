@@ -20,8 +20,8 @@ class ElectricTimeSeries(Dataset):
         self.data = data
         self.feats = feats
         self.target = target
-        self.feat_mean = torch.tensor([0] * N_INPUT_HOUR)
-        self.feat_std = torch.tensor([1] * N_INPUT_HOUR)
+        self.feat_mean = torch.tensor([0] * len(feats))
+        self.feat_std = torch.tensor([1] * len(feats))
 
     def __len__(self) -> int:
         return len(self.data) - N_INPUT_HOUR - 25
