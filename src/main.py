@@ -81,13 +81,6 @@ optimizer = torch.optim.Adam(model.parameters(), lr=.0001)
 print('')
 
 # %%
-# TESTS
-
-# X = torch.randn((3, 72, 10)).to('cuda')
-# model.eval()
-# model(X)
-
-# %%
 # Training
 
 print('Training...')
