@@ -4,6 +4,7 @@
 import matplotlib.pyplot as plt
 import torch
 from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 
 import dataloading
@@ -18,7 +19,7 @@ data = preprocessing.fetch_data()
 
 print('Preparing data...')
 data, feats, target = preprocessing.prepare_data(data)
-data
+print(data)
 
 # %%
 # Train-validation-test dataloaders
@@ -26,9 +27,14 @@ data
 batch_size = 64
 
 n = len(data)
-data_train = data.iloc[: int(n * .6)]
-data_val = data.iloc[int(n * .6) : int(n * .8)]
-data_test = data.iloc[int(n * .8):]
+
+train_idc = range(n // 2)
+val_idc = range(n // 2, 3 * n // 4)
+train_idc = range(3 * n // 4)
+test_idc = range(3 * n // 4, n)
+data_train = data.iloc[train_idc]
+data_val = data.iloc[val_idc]
+data_test = data.iloc[test_idc]
 dataset_train = dataloading.ElectricTimeSeries(data_train, feats, target)
 dataset_val = dataloading.ElectricTimeSeries(data_val, feats, target)
 dataset_test = dataloading.ElectricTimeSeries(data_test, feats, target)
@@ -68,10 +74,12 @@ n_epoch = 30
 patience = 3
 output_size = 1
 
+print('Model creation...')
 model = modeling.Forecaster(len(feats), 256, 4, output_size).to('cuda')
-print(f'{modeling.count_parameters(model)} trainable model parameters')
+print(f'{modeling.count_parameters(model)} trainable parameters')
 loss_fn = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=.0001)
+print('')
 
 # %%
 # TESTS

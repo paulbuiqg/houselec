@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 
 class Forecaster(nn.Module):
-    """Neural network model with LSTM and linear fully connected layers."""
+    """Neural network model with LSTM and fully connected layers."""
 
     def __init__(self, input_size: int, hidden_size: int, n_layer: int,
                  output_size: int):

@@ -24,7 +24,7 @@ class ElectricTimeSeries(Dataset):
         self.feat_std = torch.tensor([1] * N_INPUT_HOUR)
 
     def __len__(self) -> int:
-        return len(self.data)
+        return len(self.data) - N_INPUT_HOUR - 25
 
     def __getitem__(self, i: int) -> Union[None,
                                            Tuple[torch.Tensor, torch.Tensor]]:
