@@ -22,3 +22,5 @@ The timeseries variables are:
 ## Model setup
 
 ## Results
+
+## How to use
