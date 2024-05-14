@@ -1,6 +1,6 @@
 """Main script for model training, prediction, evaluation.
 
-To be run from terminal: python3 main.py
+To be run from terminal; python3 src/main.py
 """
 
 
@@ -20,7 +20,7 @@ import preprocessing
 # %%
 # Config
 
-with open('config.yml', 'r') as f:
+with open('src/config.yml', 'r') as f:
     config = yaml.safe_load(f)
 batch_size = config['batch_size']
 n_epoch = config['n_epoch']
@@ -75,12 +75,8 @@ dataloader_test = DataLoader(dataset_test, batch_size=batch_size,
 # %%
 # Model, loss function, optimizer
 
-n_epoch = 30
-patience = 3
-output_size = 1
-
 print('Model creation...')
-model = modeling.Forecaster(len(feats), 256, 4, output_size).to('cuda')
+model = modeling.Forecaster(len(feats), 256, 4, 1).to('cuda')
 print(f'{modeling.count_parameters(model)} trainable parameters')
 loss_fn = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=.0001)
@@ -99,7 +95,7 @@ plt.plot(model.checkpoint['val_loss_history'], label='Validation')
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
 plt.legend()
-plt.savefig('../viz/training_history.png')
+plt.savefig('viz/training_history.png')
 plt.close()
 
 # %%
@@ -134,7 +130,7 @@ plt.ylabel('Prediction')
 plt.xlim([min_plt, max_plt])
 plt.ylim([min_plt, max_plt])
 plt.title('Test set')
-plt.savefig('../viz/groundtruth_vs_prediction.png')
+plt.savefig('viz/groundtruth_vs_prediction.png')
 plt.close()
 
 # Performance on test set
