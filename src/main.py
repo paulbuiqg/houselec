@@ -67,18 +67,6 @@ dataloader_test = DataLoader(dataset_test, batch_size=batch_size,
                              shuffle=False, collate_fn=dataloading.collate_fn)
 
 # %%
-# TESTS
-
-# for i, batch in enumerate(dataloader_test):
-#     if batch is not None:
-#         X, y = batch
-#         print(i, X.size(), y.size())
-#     else:
-#         print('wooow')
-
-# dataset_train.__getitem__(99)
-
-# %%
 # Model, loss function, optimizer
 
 n_epoch = 30
@@ -122,7 +110,7 @@ print('Performance evaluation...')
 
 model.load_state_dict(model.checkpoint['best_model_state_dict'])
 
-print('Evaluation on training, validation and test sets...')
+print('Evaluation on training, validation, test sets...')
 train_loss = model.evaluate('cuda', dataloader_train, loss_fn)
 val_loss = model.evaluate('cuda', dataloader_val, loss_fn)
 test_loss = model.evaluate('cuda', dataloader_test, loss_fn)
@@ -146,6 +134,7 @@ plt.xlabel('Grountruth')
 plt.ylabel('Prediction')
 plt.xlim([min_plt, max_plt])
 plt.ylim([min_plt, max_plt])
+plt.title('Test set')
 plt.savefig('../viz/groundtruth_vs_prediction.png')
 plt.close()
 
