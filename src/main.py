@@ -1,3 +1,9 @@
+"""Main script for model training, prediction, evaluation.
+
+To be run from terminal: python3 main.py
+"""
+
+
 # %%
 # Imports
 
