@@ -10,11 +10,13 @@ from ucimlrepo import fetch_ucirepo
 
 
 def fetch_data() -> pd.DataFrame:
-    """Retrieve data as dataframe from UCI repository."""
-    # individual_household_electric_power_consumption = fetch_ucirepo(id=235)
-    # X = individual_household_electric_power_consumption.data.features
-    data = pd.read_csv('household_power_consumption.txt', sep=';',
-                       low_memory=False)
+    """Fetch dataframe from UCI repository."""
+    try:
+        data = pd.read_csv('../data/household_power_consumption.txt', sep=';',
+                           low_memory=False)
+    except FileNotFoundError:
+        individual_household_electric_power_consumption = fetch_ucirepo(id=235)
+        data = individual_household_electric_power_consumption.data.features
     return data
 
 

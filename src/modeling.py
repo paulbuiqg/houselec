@@ -15,19 +15,7 @@ class Forecaster(nn.Module):
     def __init__(self, input_size: int, hidden_size: int, n_layer: int,
                  output_size: int):
         super().__init__()
-        try:
-            self.checkpoint = torch.load('checkpoint.pt')
-            print('Checkpoint loaded')
-        except BaseException:
-            self.checkpoint = {
-                'train_loss_history': [],
-                'val_loss_history': [],
-                'epochs': 0,
-                'best_val_loss': float('inf'),
-                'best_epoch': 0,
-                'patience_counter': 0
-            }
-            print('Checkpoint initialized')
+        # Layers
         self.lstm = nn.LSTM(input_size, hidden_size, n_layer, batch_first=True)
         self.flatten = nn.Flatten()
         self.linear1 = nn.Linear(hidden_size * n_layer, 256)
@@ -35,6 +23,15 @@ class Forecaster(nn.Module):
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(p=0.5)
         self.linear2 = nn.Linear(256, output_size)
+        # Checkpoint
+        self.checkpoint = {
+            'train_loss_history': [],
+            'val_loss_history': [],
+            'epochs': 0,
+            'best_val_loss': float('inf'),
+            'best_epoch': 0,
+            'patience_counter': 0,
+        }
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         _, (h, _) = self.lstm(x)
@@ -84,8 +81,7 @@ class Forecaster(nn.Module):
         n_epoch: int,
         patience: int
     ):
-        """Run several training epochs, save checkpoint after each epoch."""
-        self.load_checkpoint(optimizer)
+        """Run several training epochs; update checkpoint after each epoch."""
         epoch = self.checkpoint['epochs'] + 1
         for epoch in range(epoch, epoch + n_epoch):
             print(f'-- Epoch {epoch} --')
@@ -95,8 +91,8 @@ class Forecaster(nn.Module):
             optimizer, loss_history = self.train_one_epoch(
                 device, dataloader_train, loss_fn, optimizer)
             val_loss = self.evaluate(device, dataloader_val, loss_fn)
-            print(f'Evaluation loss: {val_loss:>8f}')
-            self.save_checkpoint(optimizer, epoch, loss_history, val_loss)
+            print(f'Validation loss: {val_loss:>8f}')
+            self.update_checkpoint(optimizer, epoch, loss_history, val_loss)
 
     def evaluate(
         self,
@@ -107,7 +103,7 @@ class Forecaster(nn.Module):
         """Compute (mean) loss from labeled data and their prediction."""
         self.eval()
         pbar = tqdm(dataloader, desc='Evaluation', unit='batch')
-        val_loss = 0
+        mean_loss = 0
         with torch.no_grad():
             for batch in pbar:
                 if batch is not None:
@@ -117,26 +113,18 @@ class Forecaster(nn.Module):
                 X, y = X.to(device), y.to(device)
                 y_pred = self(X)
                 loss = loss_fn(y_pred, y)
-                val_loss += loss.item() / len(dataloader)
+                mean_loss += loss.item() / len(dataloader)
                 pbar.set_postfix_str(f'loss={loss.item():>8f}')
-        return val_loss
+        return mean_loss
 
-    def load_checkpoint(self, optimizer):
-        """Load existing checkpoint or initialize a checkpoint."""
-        try:
-            self.load_state_dict(self.checkpoint['model_state_dict'])
-            optimizer.load_state_dict(self.checkpoint['optimizer_state_dict'])
-        except BaseException:
-            pass
-
-    def save_checkpoint(
+    def update_checkpoint(
         self,
         optimizer: torch.optim.Optimizer,
         epoch: int,
         train_loss_history: list,
         val_loss: float
     ):
-        """Write checkpoint file."""
+        """Update the checkpoint dictionary."""
         self.checkpoint['model_state_dict'] = self.state_dict()
         self.checkpoint['optimizer_state_dict'] = optimizer.state_dict()
         self.checkpoint['train_loss_history'] += train_loss_history
@@ -147,7 +135,6 @@ class Forecaster(nn.Module):
             self.checkpoint['best_model_state_dict'] = self.state_dict()
             self.checkpoint['best_val_loss'] = val_loss
             self.checkpoint['best_epoch'] = epoch
-        torch.save(self.checkpoint, 'checkpoint.pt')
 
     def early_stopping(self, patience: int) -> bool:
         """Check if patience limit has been reached."""
