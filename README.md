@@ -34,9 +34,13 @@ Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the apparent energy (in kilojoul
 
 The model $F$ to be learned writes $Y_t = F(X_t)$, where $Y_t$ is a scalar and $X_t$ is a $24 \times 10$ matrix.
 
-The chosen model design for $F$ is a neural network with upstream recurrent layers (LSTM) and downstream fully connected layers.
+The chosen model design for $F$ is a neural network with upstream recurrent layers (LSTM) and downstream fully connected layers. The loss function is the mean squared error.
 
 ## Results
+
+<p align="center">
+  <img src="https://github.com/paulbuiqg/houselec/blob/main/viz/training_history.png" />
+</p>
 
 The data is split as follows: 50% (Dec 2006 to Nov 2008) for training, 25% (Dec 2008 to Nov 2009) for validation (loss monitoring to stop training to avoid overfitting), 25% (Dec 2009 to Nov 2010) for test.
 
