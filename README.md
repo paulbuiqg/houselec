@@ -30,10 +30,17 @@ See: https://en.wikipedia.org/wiki/AC_power
 
 At time $t$ (hourly time index), let $y_t$ be the apparent power and $x_t$ be the 7-dimensional measured vector of variables listed above. I augment $x_t$ with 3 time variables which I suppose carry information about electricity consumption: the current hour (from 0 to 23), weekday (from 0 for Monday to 6 for Sunday), day of year (from 0 for January 1st to 365 or 366 for December 31st). Let $x'_t$ be the augmented 10-dimensional vector.
 
-Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the apparent energy (in kilojoule) of the next 24 hours and $X_t = (x'_{t-23}, \dots, x'_t)$ be the observations from the last 24 hours.
+Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the apparent energy (in kilojoule) of the next 24 hours. Let $X_t = (x'_{t-23}, \dots, x'_t)$ be the stack of observations from the last 24 hours (each row vector is stacked vertically).
 
 The model $F$ to be learned writes $Y_t = F(X_t)$, where $Y_t$ is a scalar and $X_t$ is a $24 \times 10$ matrix.
 
 ## Results
 
+...
+
 ## How to use
+
+- Go to the repo root directory
+- Install requirements: `pip install -r requirements.txt`
+- Run: `python3 src/main.py`
+- For unit testing, run: `pytest`
