@@ -4,27 +4,27 @@
 
 The data is taken from the UC Irvine Machine Learning Repository: https://archive.ics.uci.edu/dataset/235/individual+household+electric+power+consumption
 
-The electricity consumption from a household in France are observed for about 4 years, from December 2006 to November 2010. Measurements are made every minute.
+The electricity consumption from a household in France is observed for about 4 years, from December 2006 to November 2010. Measurements are made every minute.
 
-The 7 timeseries variables are:
+Seven timeseries are available:
 
 - `Global_active_power`: household global minute-averaged active power (in kilowatt)
 - `Global_reactive_power`: household global minute-averaged reactive power (in kilowatt)
 - `Voltage`: minute-averaged voltage (in volt)
 - `Global_intensity`: household global minute-averaged current intensity (in  ampere)
-- `Sub_metering_1`: energy sub-metering No. 1 (in watt-hour of active energy) corresponding to the kitchen
-- `Sub_metering_2`: energy sub-metering No. 2 (in watt-hour of active energy) corresponding to the laundry room
-- `Sub_metering_3`: energy sub-metering No. 3 (in watt-hour of active energy) corresponding to an electric water-heater and an air-conditioner
+- `Sub_metering_1`: energy sub-metering (in watt-hour of active energy) corresponding to the kitchen
+- `Sub_metering_2`: energy sub-metering (in watt-hour of active energy) corresponding to the laundry room
+- `Sub_metering_3`: energy sub-metering (in watt-hour of active energy) corresponding to an electric water-heater and an air-conditioner
 
-To reduce the data size, measurements are aggregated by grouping by hour and taking the mean, so I end up with hourly measurements.
+To reduce the data size, measurements are aggregated by taking their mean by hour, so I end up with hourly measurements.
 
 ## Problem statement
 
 In a alternative current circuit, the active power and the reactive power are respectively the real part and the imaginary part of the ***complex power***. The ***apparent power*** is defined as the modulus of the complex power.
 
-I aim at predicting the apparent energy consumed in the next 24 hours given the data from the last 24 hours.
-
 See: https://en.wikipedia.org/wiki/AC_power
+
+I aim at forecasting, at each time step, the apparent energy consumed in the next 24 hours given the data from the previous 24 hours.
 
 ## Model setup
 
@@ -34,11 +34,11 @@ Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the apparent energy (in kilojoul
 
 The model $F$ to be learned writes $Y_t = F(X_t)$, where $Y_t$ is a scalar and $X_t$ is a $24 \times 10$ matrix.
 
-The chosen model design is a neural network with upstream recurrent layers (LSTM) and downstream fully connected layers.
+The chosen model design for $F$ is a neural network with upstream recurrent layers (LSTM) and downstream fully connected layers.
 
 ## Results
 
-The data is split as follows: 50% (~2 years) for training, 25% (~1 year) for validation (loss monitoring to stop training to avoid overfitting), 25% (~1 year) for test.
+The data is split as follows: 50% (Dec 2006 to Nov 2008) for training, 25% (Dec 2008 to Nov 2009) for validation (loss monitoring to stop training to avoid overfitting), 25% (Dec 2009 to Nov 2010) for test.
 
 The trained model yields a [normalized mean absolute error](https://agrimabahl.medium.com/mape-v-s-mae-v-s-rmse-3e358fd58f65) of ~0.20. Results may (marginally) vary due to random shuffling of the training data batches and random initialization of the neural network parameters.
 
