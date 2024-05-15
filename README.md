@@ -20,7 +20,7 @@ To reduce the data size, measurements are aggregated by grouping by hour and tak
 
 ## Problem statement
 
-In a alternative current circuit, the active power and the reactive power are respectively the real part and the imaginary part of the *complex power*. The *apparent power* is defined as the modulus of the complex power.
+In a alternative current circuit, the active power and the reactive power are respectively the real part and the imaginary part of the ***complex power***. The ***apparent power*** is defined as the modulus of the complex power.
 
 I aim at predicting the apparent energy consumed in the next 24 hours given the data from the last 24 hours.
 
@@ -28,19 +28,23 @@ See: https://en.wikipedia.org/wiki/AC_power
 
 ## Model setup
 
-At time $t$ (hourly time index), let $y_t$ be the apparent power and $x_t$ be the 7-dimensional measured vector of variables listed above. I augment $x_t$ with 3 time variables which I suppose carry information about electricity consumption: the current hour (from 0 to 23), weekday (from 0 for Monday to 6 for Sunday), day of year (from 0 for January 1st to 365 or 366 for December 31st). Let $x'_t$ be the augmented 10-dimensional vector.
+At time $t$ (hourly time index), let $y_t$ be the apparent power and $x_t$ be the 7-dimensional measured vector of variables listed above. I augment $x_t$ with 3 time variables which supposedly carry information about electricity consumption: the current hour (from 0 to 23), weekday (from 0 for Monday to 6 for Sunday), day of year (from 0 for January 1st to 365 or 366 for December 31st). Let $x'_t$ be the augmented 10-dimensional vector.
 
 Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the apparent energy (in kilojoule) of the next 24 hours. Let $X_t = (x'_{t-23}, \dots, x'_t)$ be the stack of observations from the last 24 hours (each row vector is stacked vertically).
 
 The model $F$ to be learned writes $Y_t = F(X_t)$, where $Y_t$ is a scalar and $X_t$ is a $24 \times 10$ matrix.
 
+The chosen model design is a neural network with upstream recurrent layers (LSTM) and downstream fully connected layers.
+
 ## Results
 
-...
+The data is split as follows: 50% (~2 years) for training, 25% (~1 year) for validation (loss monitoring to stop training to avoid overfitting), 25% (~1 year) for test.
+
+The trained model yields a [normalized mean absolute error](https://agrimabahl.medium.com/mape-v-s-mae-v-s-rmse-3e358fd58f65) of ~0.20. Results may (marginally) vary due to random shuffling of the training data batches and random initialization of the neural network parameters.
 
 ## How to use
 
 - Go to the repo root directory
-- Install requirements: `pip install -r requirements.txt`
+- Install required libraries: `pip install -r requirements.txt`
 - Run: `python3 src/main.py`
 - For unit testing, run: `pytest`
