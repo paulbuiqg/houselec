@@ -38,11 +38,11 @@ The chosen model design for $F$ is a neural network with upstream recurrent laye
 
 ## Results
 
+The data is split as follows: 50% (Dec 2006 to Nov 2008) for training, 25% (Dec 2008 to Nov 2009) for validation (loss monitoring to stop training to avoid overfitting), 25% (Dec 2009 to Nov 2010) for test.
+
 <p align="center">
   <img src="https://github.com/paulbuiqg/houselec/blob/main/viz/training_history.png" />
 </p>
-
-The data is split as follows: 50% (Dec 2006 to Nov 2008) for training, 25% (Dec 2008 to Nov 2009) for validation (loss monitoring to stop training to avoid overfitting), 25% (Dec 2009 to Nov 2010) for test.
 
 The trained model yields a [normalized mean absolute error](https://agrimabahl.medium.com/mape-v-s-mae-v-s-rmse-3e358fd58f65) of ~0.20. Results may (marginally) vary due to random shuffling of the training data batches and random initialization of the neural network parameters.
 
