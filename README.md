@@ -16,11 +16,11 @@ Seven timeseries are available:
 - `Sub_metering_2`: energy sub-metering (in watt-hour of active energy) corresponding to the laundry room
 - `Sub_metering_3`: energy sub-metering (in watt-hour of active energy) corresponding to an electric water-heater and an air-conditioner.
 
-To reduce the data size, measurements are aggregated by grouping by hour and taking the average, so I end up with hourly measurements.
+To reduce the data size, measurements are aggregated by averaging over each hour, so I end up with hourly measurements.
 
 ## Problem statement
 
-In a alternative current circuit, the active power and the reactive power are respectively the real part and the imaginary part of the ***complex power***. The ***apparent power*** is defined as the modulus of the complex power.
+In an alternative current circuit, the active power and the reactive power are respectively the real part and the imaginary part of the ***complex power***. The ***apparent power*** is defined as the modulus of the complex power.
 
 See: https://en.wikipedia.org/wiki/AC_power
 
