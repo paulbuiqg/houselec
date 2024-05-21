@@ -38,6 +38,16 @@ data, feats, target = preprocessing.prepare_data(data)
 print('')
 
 # %%
+# Target timeseries viz
+
+plt.plot(data[('Date')], data[target])
+plt.xlabel('Date')
+plt.ylabel('Apparent energy (kilowatthour)')
+plt.xticks(rotation=30)
+plt.savefig('viz/target_timeseries.png', bbox_inches='tight')
+plt.close()
+
+# %%
 # Train-validation-test dataloaders
 
 print('Training-validation-test split...')
