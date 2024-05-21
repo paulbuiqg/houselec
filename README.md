@@ -36,7 +36,7 @@ At time $t$ (hourly time index), let $y_t$ be the apparent power and $x_t$ be th
 
 Let $x'_t$ be the augmented 10-dimensional vector.
 
-Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the total ***apparent energy*** (in kilojoule) consumed during the next 24 hours. Let $X_t = (x'_{t-23}, \dots, x'_t)$ be the stack of observations from the last 24 hours (each row vector is stacked vertically).
+Then let $Y_t = y_{t+1} + \cdots + y_{t+24}$ be the total ***apparent energy*** (in kilowatthour) consumed during the next 24 hours. Let $X_t = (x'_{t-23}, \dots, x'_t)$ be the stack of observations from the last 24 hours (each row vector is stacked vertically).
 
 The model $F$ to be learned writes $Y_t = F(X_t)$, where $Y_t$ is a scalar and $X_t$ is a $24 \times 10$ matrix.
 
