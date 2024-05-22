@@ -27,7 +27,7 @@ def dataloader(dataset: Dataset) -> DataLoader:
 def test_dataset(dataset: Dataset):
     """Test if dataset items have the correct size."""
     i = random.randrange(len(dataset))
-    X, y = dataset.__getitem__(i)
+    X, y = dataset[i]
     X_size = torch.Size([dataloading.N_INPUT_HOUR, len(dataset.feats)])
     y_size = torch.Size([1])
     assert X.size() == X_size and y.size() == y_size
