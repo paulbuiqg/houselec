@@ -60,10 +60,10 @@ The trained model prediction has a [normalized mean absolute error](https://agri
 
 - Go to the repo root directory
 - Install required libraries: `pip install -r requirements.txt`
-- Run: `python3 src/main.py`
+- Run: `python3 houselec/main.py`
 - For unit testing, run: `pytest`
 
-The file `src/config.yml` contains settings for the neural net training:
+The file `houselec/config.yml` contains settings for the neural net training:
 - `batch_size`: size of minibatch for gradient descent
 - `n_epoch`: maximum number of epochs
 - `patience`: number of successive epochs without validation loss improvement before stopping training.
