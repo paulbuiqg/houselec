@@ -13,14 +13,14 @@ import yaml
 from sklearn.metrics import r2_score
 from torch.utils.data import DataLoader
 
-import dataloading
-import modeling
-import preprocessing
+from houselec import dataloading
+from houselec import modeling
+from houselec import preprocessing
 
 # %%
 # Config
 
-with open('src/config.yml', 'r') as f:
+with open('scripts/config.yml', 'r') as f:
     config = yaml.safe_load(f)
 batch_size = config['batch_size']
 n_epoch = config['n_epoch']
