@@ -59,7 +59,8 @@ The trained model prediction has a [normalized mean absolute error](https://agri
 ## How to use
 
 - Go to the repo root directory
-- Install required libraries: `pip install -r requirements.txt`
+- Download and install packages: `pip install -r requirements.txt`
+- Install local package: `pip install -e .`
 - Run: `python3 houselec/main.py`
 - For unit testing, run: `pytest`
 
